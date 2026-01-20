@@ -6,9 +6,10 @@
 
 
 ## Enumeration
-nmap -sV -A ip
 
 I began with a service and version scan using nmap to identify exposed services on the target host.
+
+nmap -sV -A <ip>
 
 The scan revealed three open ports:
 
@@ -18,12 +19,15 @@ The scan revealed three open ports:
 
 <img width="330" height="107" alt="1" src="https://github.com/user-attachments/assets/6ec9b325-ef70-45c5-b942-49b5a90b41f9" />
 
-try the anonymous ftp connection:
+# FTP Enumeration
+
+I first attempted to log in via FTP using anonymous credentials; however, authentication was not permitted.
 
 <img width="294" height="173" alt="image" src="https://github.com/user-attachments/assets/13a079b4-e0e7-4281-b440-87abec42f5cd" />
 
+As a result, I proceeded to enumerate the HTTP service.
 
-failed, okay and we check the http.
+# Web Enumeration
 
 check if it's a website:
 
@@ -36,6 +40,8 @@ and check it through the Chrome:
 
 <img width="1467" height="633" alt="image" src="https://github.com/user-attachments/assets/b3cce7a0-a021-4bd5-a2e5-7235fbc2522e" />
 
+
+## Credential Harvesting
 
 While browsing the dashboard, I noticed that the /data/{id} endpoint accepted numeric values without authentication checks.
 
@@ -54,6 +60,9 @@ By filtering on the FTP protocol, I was able to extract valid credentials from t
 
 And I can get the user credentials. User: nathan; password: Buck3tH4TF0RM3!
 
+
+## Initial Access
+
 password for the ftp and the ssh are the same. So we try
 
 <img width="259" height="24" alt="image" src="https://github.com/user-attachments/assets/aa62df58-90f6-48c3-af35-741a60ffa648" />
@@ -62,6 +71,7 @@ password for the ftp and the ssh are the same. So we try
 and we can see we are as the nathan user here.
 
 <img width="529" height="37" alt="image" src="https://github.com/user-attachments/assets/12104da0-0e6e-4922-b334-04d000e31d19" />
+
 
 
 ## Privilege Escalation
