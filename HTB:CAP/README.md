@@ -48,6 +48,7 @@ password for the ftp and the ssh are the same. So we try
 
 
 and we can see we are as the nathan user here.
+
 <img width="529" height="37" alt="image" src="https://github.com/user-attachments/assets/12104da0-0e6e-4922-b334-04d000e31d19" />
 
 
