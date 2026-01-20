@@ -14,6 +14,7 @@ try the anonymous ftp connection:
 
 <img width="294" height="173" alt="image" src="https://github.com/user-attachments/assets/13a079b4-e0e7-4281-b440-87abec42f5cd" />
 
+
 failed, okay and we check the http.
 
 check if it's a website:
@@ -22,15 +23,18 @@ check if it's a website:
 
 So we know the 80 port is the Gunicorn.
 
+
 and check it through the Chrome:
 
 <img width="1467" height="633" alt="image" src="https://github.com/user-attachments/assets/b3cce7a0-a021-4bd5-a2e5-7235fbc2522e" />
+
 
 and we can check the Security Snapshot, and we notice the url changed. Very interesting, if we click or refresh the website we can notice the url is changed. Especially the last /id
 
 Browsing to /data/0 does indeed reveal a packet capture with multiple packets.
 
 <img width="1462" height="776" alt="image" src="https://github.com/user-attachments/assets/b84a0eb8-f583-4aec-a936-4c26dcb758f2" />
+
 
 Use the Wireshark to capture the FTP traffic.
 
@@ -41,6 +45,7 @@ And we can get the user credentials. User: nathan; password: Buck3tH4TF0RM3!
 password for the ftp and the ssh are the same. So we try
 
 <img width="259" height="24" alt="image" src="https://github.com/user-attachments/assets/aa62df58-90f6-48c3-af35-741a60ffa648" />
+
 
 and we can see we are as the nathan user here.
 <img width="529" height="37" alt="image" src="https://github.com/user-attachments/assets/12104da0-0e6e-4922-b334-04d000e31d19" />
