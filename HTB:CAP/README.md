@@ -7,6 +7,7 @@
 
 ## Enumeration
 nmap -sV -A 10.129.4.23
+
 <img width="330" height="107" alt="1" src="https://github.com/user-attachments/assets/6ec9b325-ef70-45c5-b942-49b5a90b41f9" />
 
 check if it's a website:
