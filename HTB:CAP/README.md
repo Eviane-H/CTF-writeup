@@ -8,6 +8,14 @@
 ## Enumeration
 nmap -sV -A ip
 
+I began with a service and version scan using nmap to identify exposed services on the target host.
+
+The scan revealed three open ports:
+
+21/tcp (FTP – vsftpd 3.0.3)
+22/tcp (SSH – OpenSSH 8.2p1)
+80/tcp (HTTP – Gunicorn)
+
 <img width="330" height="107" alt="1" src="https://github.com/user-attachments/assets/6ec9b325-ef70-45c5-b942-49b5a90b41f9" />
 
 try the anonymous ftp connection:
@@ -29,18 +37,22 @@ and check it through the Chrome:
 <img width="1467" height="633" alt="image" src="https://github.com/user-attachments/assets/b3cce7a0-a021-4bd5-a2e5-7235fbc2522e" />
 
 
-and we can check the Security Snapshot, and we notice the url changed. Very interesting, if we click or refresh the website we can notice the url is changed. Especially the last /id
+While browsing the dashboard, I noticed that the /data/{id} endpoint accepted numeric values without authentication checks.
+
+By manually modifying the ID parameter (e.g. /data/0), I was able to access a packet capture file, indicating a lack of proper access control (IDOR).
 
 Browsing to /data/0 does indeed reveal a packet capture with multiple packets.
 
 <img width="1462" height="776" alt="image" src="https://github.com/user-attachments/assets/b84a0eb8-f583-4aec-a936-4c26dcb758f2" />
 
 
-Use the Wireshark to capture the FTP traffic.
+Since FTP transmits credentials in plaintext, I analyzed the provided PCAP file using Wireshark.
+
+By filtering on the FTP protocol, I was able to extract valid credentials from the USER and PASS commands.
 
 <img width="1195" height="267" alt="image" src="https://github.com/user-attachments/assets/7e515798-7191-40fb-82c8-fcd673401598" />
 
-And we can get the user credentials. User: nathan; password: Buck3tH4TF0RM3!
+And I can get the user credentials. User: nathan; password: Buck3tH4TF0RM3!
 
 password for the ftp and the ssh are the same. So we try
 
@@ -57,7 +69,7 @@ We try to find the urls with the Capabilities.
 
 <img width="883" height="102" alt="image" src="https://github.com/user-attachments/assets/c9e660ef-d01f-4ade-aedf-f5db4cf3723f" />
 
-Here we find the key words: cap_setuid: /usr/bin/python3.8
+The binary /usr/bin/python3.8 was assigned the cap_setuid capability, allowing it to change its effective UID.
 
 Okay we can use this to get the root 
 
@@ -65,13 +77,12 @@ Okay we can use this to get the root
 
 
 ## Attack Chain Summary 
-1. from Http to find the vulnerable parts.
-2. From the urls we can shift the different users and their information. And use the Wireshark to get the FTP traffic and get the username and pw.
-3. Find the files with Capabilities to escalate privilege.
+An IDOR vulnerability in the web application exposed a packet capture containing FTP credentials, which were reused for SSH access.
+The compromised user account had a misconfigured Linux capability on Python, allowing privilege escalation to root.
 
 
 ## Lessons Learned
-From urls to change the user and check the information. 
+Sensitive data such as PCAP files should never be exposed through predictable URLs.
 
 
 
