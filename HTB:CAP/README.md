@@ -5,7 +5,7 @@
 - Goal: Root 
 
 
-## Enumeration
+# Enumeration
 
 I began with a service and version scan using nmap to identify exposed services on the target host.
 
@@ -19,7 +19,8 @@ The scan revealed three open ports:
 
 <img width="330" height="107" alt="1" src="https://github.com/user-attachments/assets/6ec9b325-ef70-45c5-b942-49b5a90b41f9" />
 
-# FTP Enumeration
+
+## FTP Enumeration
 
 I first attempted to log in via FTP using anonymous credentials; however, authentication was not permitted.
 
@@ -27,7 +28,8 @@ I first attempted to log in via FTP using anonymous credentials; however, authen
 
 As a result, I proceeded to enumerate the HTTP service.
 
-# Web Enumeration
+
+## Web Enumeration
 
 check if it's a website:
 
@@ -41,7 +43,7 @@ and check it through the Chrome:
 <img width="1467" height="633" alt="image" src="https://github.com/user-attachments/assets/b3cce7a0-a021-4bd5-a2e5-7235fbc2522e" />
 
 
-## Credential Harvesting
+# Credential Harvesting
 
 While browsing the dashboard, I noticed that the /data/{id} endpoint accepted numeric values without authentication checks.
 
@@ -61,7 +63,7 @@ By filtering on the FTP protocol, I was able to extract valid credentials from t
 And I can get the user credentials. User: nathan; password: Buck3tH4TF0RM3!
 
 
-## Initial Access
+# Initial Access
 
 password for the ftp and the ssh are the same. So we try
 
@@ -74,7 +76,7 @@ and we can see we are as the nathan user here.
 
 
 
-## Privilege Escalation
+# Privilege Escalation
 We try to find the urls with the Capabilities.
 
 <img width="883" height="102" alt="image" src="https://github.com/user-attachments/assets/c9e660ef-d01f-4ade-aedf-f5db4cf3723f" />
@@ -86,14 +88,16 @@ Okay we can use this to get the root
 <img width="700" height="37" alt="image" src="https://github.com/user-attachments/assets/b71cb933-8081-4632-aef2-4d34ac56d922" />
 
 
-## Attack Chain Summary 
+# Attack Chain Summary 
 An IDOR vulnerability in the web application exposed a packet capture containing FTP credentials, which were reused for SSH access.
+
 The compromised user account had a misconfigured Linux capability on Python, allowing privilege escalation to root.
 
 
-## Lessons Learned
+# Lessons Learned
 Sensitive data such as PCAP files should never be exposed through predictable URLs.
 
+Legacy protocols like FTP should be avoided due to plaintext credential transmission.
 
 
 
